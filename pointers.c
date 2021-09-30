@@ -1,6 +1,24 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+void printbytes(int isdec, char* ptr) {
+	for (int i = 0; i < 4; i++) {
+		if (isdec) printf("%hhu ", *ptr);
+		else printf("%hhx ", *ptr);
+		ptr++;
+	}
+	printf("    ");
+}
+
+void printupdate(char* ptr) {
+	printf("hexadecimal: ");
+	printbytes(0, ptr);
+
+	printf("decimal: ");
+	printbytes(1, ptr);
+	printf("\n");
+}
+
 int main() {
 	char c = 'x';
 	int k = 5048737;
@@ -24,18 +42,24 @@ int main() {
 	printf("intptr: %p    intptr points to: %d\n", intptr, *intptr);
 	printf("charptr: %p    charptr points to: %d\n", charptr, *charptr);
 	printf("decimal: %u    hex: %x\n", us, us);
-	printf("Bytes in hexadecimal:\n");
+
+	printf("Original:\n");
+	printupdate(charptr);
+
+	printf("Adding one to each byte:\n");
 	char* copy = charptr;
 	for (int i = 0; i < 4; i++) {
-		printf("%hhx ", *copy);
+		(*copy)++;
 		copy++;
+		printupdate(charptr);
 	}
-	printf("\n");
-	printf("Bytes in decimal:\n");
+
+	printf("Adding 16 to each byte:\n");
+	us = 987654321;
 	copy = charptr;
 	for (int i = 0; i < 4; i++) {
-		printf("%hhu ", *copy);
+		(*copy) += 16;
 		copy++;
+		printupdate(charptr);
 	}
-	printf("\n");
 }
